@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Bar</title>
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r119/three.min.js"></script>
+	<script src="inflate.min.js"></script>
+	<script src="FBXLoader.js"></script>
+	<script src="OrbitControls.js"></script>
+
+	<script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        
+        //Luces bar
+
+        const lightP1 = new THREE.PointLight(0x1C9C47,3.5, 100);
+            lightP1.position.set(-10,40,-10);
+            scene.add( lightP1 );
+            lightP1.castShadow = true
+        const sphereSize1=1;
+        const pointLightHelper1 = new THREE.PointLightHelper( lightP1, sphereSize1 );
+//            scene.add( pointLightHelper1 );
+
+            //luz 2
+
+        
+            const lightP2 = new THREE.PointLight(0xB420BB,2, 100);
+            lightP2.position.set(-10,40,20);
+            scene.add( lightP2 );
+            lightP2.castShadow = true
+        const sphereSize2=1;
+        const pointLightHelper2 = new THREE.PointLightHelper( lightP2, sphereSize2 );
+           // scene.add( pointLightHelper2 );
+
+            //////
+
+        const loader = new THREE.TextureLoader();
+        const loaderM = new THREE.FBXLoader();
+        loaderM.load('escena.fbx', function (object) {
+            object.traverse(function (child) {
+               
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    console.log(child.name)
+                    if (child.name == "mesabl")
+                        child.material = new THREE.MeshPhongMaterial(
+                            {
+                                map: loader.load('aluminio.jpg'),
+                            }
+                        )
+                    child.material.skinning = true;
+                }
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    console.log(child.name)
+                    if (child.name == "pisob")
+                        child.material = new THREE.MeshPhongMaterial(
+                            {
+                                map: loader.load('marmol.jpg'),
+                            }
+                        )
+                    child.material.skinning = true;
+                }
+               
+                //if (child.isMesh) {
+                  //  child.castShadow = true;
+                   // child.receiveShadow = true;
+                    //console.log(child.name)
+                   // if (child.name == "paños1")
+                      //  child.material = new THREE.MeshPhongMaterial(
+                        //    {
+                          //     map: loader.load('paño.jpg'),
+                          //     normalMap: loader.load('normalpaño.jpg'),
+                          //  }
+                        //)
+                   // child.material.skinning = true;
+               // }   
+               if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    console.log(child.name)
+                    if (child.name == "sillas1")
+                        child.material = new THREE.MeshPhongMaterial(
+                            {
+                                map: loader.load('/casino/cuero.jpg'),
+                            }
+                        )
+                    child.material.skinning = true;
+                }
+               
+
+
+               if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    console.log(child.name)
+                    if (child.name == "metal")
+                        child.material = new THREE.MeshPhongMaterial(
+                            {
+                                map: loader.load('metall.jpg'),
+                            }
+                        )
+                    child.material.skinning = true;
+                }
+               
+            });
+            scene.add(object);
+        });
+        camera.position.z = 5;
+        controls.update();
+        renderer.render(scene, camera);
+        const animate = function () {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        };
+        animate();
+    </script>
+</body>
+</html>
